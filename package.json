@@ -1,0 +1,21 @@
+{
+  "name": "coffee-api-consumer",
+  "version": "1.0.0",
+  "description": "Consumer application for the Sample coffee API (https://api.sampleapis.com/coffee/hot/).",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Jordan Walsh (jordanwalsh23@gmail.com)",
+  "license": "MIT",
+  "repository": {
+    "url": "git@github.com:jordanwalsh23/coffee-api-consumer.git"
+  },
+  "dependencies": {
+    "axios": "^1.1.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.1.0"
+  }
+}
