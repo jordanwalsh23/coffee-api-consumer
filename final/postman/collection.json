@@ -1,0 +1,554 @@
+{
+  "collection": {
+    "info": {
+      "name": "Contract Tests [v1]",
+      "description": "Contract Tests [v1]",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Setup",
+        "item": [
+          {
+            "name": "Set Variables",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "//Used to differentiate between individual tests and tests run using the collection runner.",
+                    "let testResults = {",
+                    "  id: pm.variables.replaceIn('{{$guid}}'),",
+                    "  createdDate: Date.now(),",
+                    "  apiVersion: \"v1\",",
+                    "  states: {}",
+                    "};",
+                    "pm.variables.set(\"testResults\", JSON.stringify(testResults));"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "https://postman-echo.com/get",
+                "protocol": "https",
+                "host": [
+                  "postman-echo",
+                  "com"
+                ],
+                "path": [
+                  "get"
+                ]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Database has no coffees.",
+        "item": [
+          {
+            "name": "GET /coffee/cold",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "Accept",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "x-mock-response-name",
+                  "value": "GET /coffee/cold 1507273d-f188-4727-a8f0-27b66d78d649",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "/coffee/cold",
+                "protocol": "",
+                "host": "{{baseUrl}}",
+                "path": [
+                  "",
+                  "coffee",
+                  "cold"
+                ]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "\"\"",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [
+              {
+                "name": "GET /coffee/cold 1507273d-f188-4727-a8f0-27b66d78d649",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Accept",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "x-mock-response-name",
+                      "value": "GET /coffee/cold 1507273d-f188-4727-a8f0-27b66d78d649",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "/coffee/cold",
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "path": [
+                      "",
+                      "coffee",
+                      "cold"
+                    ]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "\"\"",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  }
+                },
+                "code": 500,
+                "status": "Internal Server Error",
+                "_postman_previewlanguage": "json",
+                "body": "\"\"",
+                "header": []
+              }
+            ],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "let test = \"\";",
+                    "let passed = null;",
+                    "",
+                    "let requestDetails = {\"request\":\"GET /coffee/cold\",\"tests\":[]};",
+                    "",
+                    "//Validate status code matches expected status code",
+                    "test = 'Status code is 500';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    try {",
+                    "        pm.response.to.have.status(500);",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "var Ajv = require('ajv'),",
+                    "ajv = new Ajv({logger: console});",
+                    "let schema = {\"type\":\"string\"};",
+                    "",
+                    "//Validate response schema matches expected schema",
+                    "test = 'Validate schema';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    ",
+                    "    try {",
+                    "        var data = pm.response.json();",
+                    "        pm.expect(ajv.validate(schema, data)).to.be.true;",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "",
+                    "if(pm.variables.get(\"testResults\")) {",
+                    "    let testResults = JSON.parse(pm.variables.get(\"testResults\"));",
+                    "",
+                    "    if(!testResults.states['Database has no coffees.']) {",
+                    "        testResults.states['Database has no coffees.'] = [];",
+                    "    }",
+                    "",
+                    "    testResults.states['Database has no coffees.'].push(requestDetails);",
+                    "    pm.variables.set(\"testResults\", JSON.stringify(testResults))",
+                    "    console.log(\"testResults\", testResults)",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "//Expected State: Database has no coffees.",
+                "//To be popuplated by the API producer."
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Database has a list of coffees.",
+        "item": [
+          {
+            "name": "GET /coffee/hot",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "Accept",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "x-mock-response-name",
+                  "value": "GET /coffee/hot b6c2c5bb-a924-4e22-96b5-e91552f2d6b2",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "/coffee/hot",
+                "protocol": "",
+                "host": "{{baseUrl}}",
+                "path": [
+                  "",
+                  "coffee",
+                  "hot"
+                ]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "\"\"",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [
+              {
+                "name": "GET /coffee/hot b6c2c5bb-a924-4e22-96b5-e91552f2d6b2",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Accept",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "x-mock-response-name",
+                      "value": "GET /coffee/hot b6c2c5bb-a924-4e22-96b5-e91552f2d6b2",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "/coffee/hot",
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "path": [
+                      "",
+                      "coffee",
+                      "hot"
+                    ]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "\"\"",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  }
+                },
+                "code": 200,
+                "status": "OK",
+                "_postman_previewlanguage": "json",
+                "body": "[{\"title\":\"Black\",\"description\":\"Black coffee is as simple as it gets with ground coffee beans steeped in hot water, served warm. And if you want to sound fancy, you can call black coffee by its proper name: cafe noir.\",\"ingredients\":[\"Coffee\"],\"image\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/640px-A_small_cup_of_coffee.JPG\",\"id\":1},{\"title\":\"Latte\",\"description\":\"As the most popular coffee drink out there, the latte is comprised of a shot of espresso and steamed milk with just a touch of foam. It can be ordered plain or with a flavor shot of anything from vanilla to pumpkin spice.\",\"ingredients\":[\"Espresso\",\"Steamed Milk\"],\"image\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Latte_at_Doppio_Ristretto_Chiang_Mai_01.jpg/509px-Latte_at_Doppio_Ristretto_Chiang_Mai_01.jpg\",\"id\":2}]",
+                "header": []
+              }
+            ],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "let test = \"\";",
+                    "let passed = null;",
+                    "",
+                    "let requestDetails = {\"request\":\"GET /coffee/hot\",\"tests\":[]};",
+                    "",
+                    "//Validate status code matches expected status code",
+                    "test = 'Status code is 200';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    try {",
+                    "        pm.response.to.have.status(200);",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "var Ajv = require('ajv'),",
+                    "ajv = new Ajv({logger: console});",
+                    "let schema = {\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"ingredients\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"image\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"}},\"required\":[\"title\",\"description\",\"ingredients\",\"image\",\"id\"]}};",
+                    "",
+                    "//Validate response schema matches expected schema",
+                    "test = 'Validate schema';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    ",
+                    "    try {",
+                    "        var data = pm.response.json();",
+                    "        pm.expect(ajv.validate(schema, data)).to.be.true;",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "",
+                    "if(pm.variables.get(\"testResults\")) {",
+                    "    let testResults = JSON.parse(pm.variables.get(\"testResults\"));",
+                    "",
+                    "    if(!testResults.states['Database has a list of coffees.']) {",
+                    "        testResults.states['Database has a list of coffees.'] = [];",
+                    "    }",
+                    "",
+                    "    testResults.states['Database has a list of coffees.'].push(requestDetails);",
+                    "    pm.variables.set(\"testResults\", JSON.stringify(testResults))",
+                    "    console.log(\"testResults\", testResults)",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          },
+          {
+            "name": "GET /coffee/hot/1",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "Accept",
+                  "value": "application/json",
+                  "type": "text"
+                },
+                {
+                  "key": "x-mock-response-name",
+                  "value": "GET /coffee/hot/1 30b107f4-6264-43c7-bcc0-4acfc8fe0be9",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "/coffee/hot/1",
+                "protocol": "",
+                "host": "{{baseUrl}}",
+                "path": [
+                  "",
+                  "coffee",
+                  "hot",
+                  "1"
+                ]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "\"\"",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              }
+            },
+            "response": [
+              {
+                "name": "GET /coffee/hot/1 30b107f4-6264-43c7-bcc0-4acfc8fe0be9",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Accept",
+                      "value": "application/json",
+                      "type": "text"
+                    },
+                    {
+                      "key": "x-mock-response-name",
+                      "value": "GET /coffee/hot/1 30b107f4-6264-43c7-bcc0-4acfc8fe0be9",
+                      "type": "text"
+                    }
+                  ],
+                  "url": {
+                    "raw": "/coffee/hot/1",
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "path": [
+                      "",
+                      "coffee",
+                      "hot",
+                      "1"
+                    ]
+                  },
+                  "body": {
+                    "mode": "raw",
+                    "raw": "\"\"",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  }
+                },
+                "code": 200,
+                "status": "OK",
+                "_postman_previewlanguage": "json",
+                "body": "{\"title\":\"Black\",\"description\":\"Black coffee is as simple as it gets with ground coffee beans steeped in hot water, served warm. And if you want to sound fancy, you can call black coffee by its proper name: cafe noir.\",\"ingredients\":[\"Coffee\"],\"image\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/640px-A_small_cup_of_coffee.JPG\",\"id\":1}",
+                "header": []
+              }
+            ],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "let test = \"\";",
+                    "let passed = null;",
+                    "",
+                    "let requestDetails = {\"request\":\"GET /coffee/hot/1\",\"tests\":[]};",
+                    "",
+                    "//Validate status code matches expected status code",
+                    "test = 'Status code is 200';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    try {",
+                    "        pm.response.to.have.status(200);",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "var Ajv = require('ajv'),",
+                    "ajv = new Ajv({logger: console});",
+                    "let schema = {\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"ingredients\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"image\":{\"type\":\"string\"},\"id\":{\"type\":\"integer\"}},\"required\":[\"title\",\"description\",\"ingredients\",\"image\",\"id\"]};",
+                    "",
+                    "//Validate response schema matches expected schema",
+                    "test = 'Validate schema';",
+                    "passed = false;",
+                    "pm.test(test, () => {",
+                    "    ",
+                    "    try {",
+                    "        var data = pm.response.json();",
+                    "        pm.expect(ajv.validate(schema, data)).to.be.true;",
+                    "        passed = true;",
+                    "    } finally {",
+                    "        requestDetails.tests.push({",
+                    "            test: test,",
+                    "            passed: passed,",
+                    "            datetime: Date.now()",
+                    "        })",
+                    "    }",
+                    "});",
+                    "",
+                    "if(pm.variables.get(\"testResults\")) {",
+                    "    let testResults = JSON.parse(pm.variables.get(\"testResults\"));",
+                    "",
+                    "    if(!testResults.states['Database has a list of coffees.']) {",
+                    "        testResults.states['Database has a list of coffees.'] = [];",
+                    "    }",
+                    "",
+                    "    testResults.states['Database has a list of coffees.'].push(requestDetails);",
+                    "    pm.variables.set(\"testResults\", JSON.stringify(testResults))",
+                    "    console.log(\"testResults\", testResults)",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        ],
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "//Expected State: Database has a list of coffees.",
+                "//To be popuplated by the API producer."
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
